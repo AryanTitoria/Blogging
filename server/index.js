@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 
 import connection from './database/db.js';
 import Router from './routes/routes.js';
+import imageRoute from './routes/image-route.js';
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(bodyParser.json({ extended: true}))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/', Router);
+app.use('/file', imageRoute);
 
 
 const PORT = 8000;

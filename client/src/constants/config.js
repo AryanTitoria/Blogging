@@ -1,3 +1,5 @@
+import { UploadFile } from "@mui/icons-material"
+
 //API_NOTIFICATIONS_MESSAGES
 export const API_NOTIFICATIONS_MESSAGES = {
     loading: {
@@ -28,5 +30,7 @@ export const API_NOTIFICATIONS_MESSAGES = {
 
 export const SERVICE_URLS = {
     userSignup: { url: '/signup', method: 'POST' },
-    userLogin: { url: '/login', method: 'POST' }
+    userLogin: { url: '/login', method: 'POST' },
+    uploadFile: { url: '/file/upload', method: 'POST' },
+    createPost: { url: 'create', method: 'POST'}
 }

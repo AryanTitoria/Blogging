@@ -92,10 +92,9 @@ const CreatePost = () => {
 
   uploadImage();
 }, [file]);
- // 🔹 only depend on file change
 
 useEffect(() => {
-  // 🔹 update meta info separately to avoid extra uploads
+ 
   setPost(prev => ({
     ...prev,
     categories: location.search?.split("=")[1] || "All",
@@ -108,16 +107,24 @@ useEffect(() => {
     const handleChange = (e) => {
         setPost({ ...post, [e.target.name]: e.target.value })
     }
-
     const savePost = async () => {
-    // 🧩 Check if image is still uploading
-    if (!post.picture) {
-        alert("Image is still uploading. Please wait...");
+    // Default banner image
+    const defaultImage = 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=752&q=80';
+
+    // ⏳ If file selected but upload not complete yet
+    if (file && !post.picture) {
+        alert("Please wait, image is still uploading...");
         return;
     }
 
+    // 🧩 If no image selected at all, use default banner
+    const postData = {
+        ...post,
+        picture: post.picture || defaultImage,
+    };
+
     try {
-        const response = await API.createPost(post);
+        const response = await API.createPost(postData);
         if (response.isSuccess) {
             navigate('/');
         } else {
@@ -128,6 +135,26 @@ useEffect(() => {
         alert("Something went wrong while creating the post.");
     }
 };
+
+    // const savePost = async () => {
+    // // 🧩 Check if image is still uploading
+    // if (!post.picture) {
+    //     alert("Image is still uploading. Please wait...");
+    //     return;
+    // }
+
+    // try {
+    //     const response = await API.createPost(post);
+    //     if (response.isSuccess) {
+    //         navigate('/');
+    //     } else {
+    //         alert("Failed to create post. Please try again.");
+    //     }
+    // } catch (error) {
+    //     console.error("Error creating post:", error);
+    //     alert("Something went wrong while creating the post.");
+    // }
+    // };
 
     // const savePost = async () => {
     //     let response = await API.createPost(post);

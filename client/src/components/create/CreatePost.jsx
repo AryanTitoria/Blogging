@@ -8,9 +8,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { DataContext } from '../../context/DataProvider';
 import { API } from '../../service/api';
 
-const Container = styled(Box)`
-    margin: 50px 100px
-`;
+const Container = styled(Box)(({ theme }) =>({
+    margin: '50px 100px',
+    [theme.breakpoints.down('md')]: {
+        margin: 0
+    }
+}));
 
 const Image = styled('img')({
     width: '95%',         
@@ -108,61 +111,32 @@ useEffect(() => {
         setPost({ ...post, [e.target.name]: e.target.value })
     }
     const savePost = async () => {
-    // Default banner image
+    
     const defaultImage = 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=752&q=80';
 
-    // ⏳ If file selected but upload not complete yet
-    if (file && !post.picture) {
-        alert("Please wait, image is still uploading...");
-        return;
-    }
+        if (file && !post.picture) {
+            alert("Please wait, image is still uploading...");
+            return;
+        }
 
-    // 🧩 If no image selected at all, use default banner
-    const postData = {
-        ...post,
-        picture: post.picture || defaultImage,
+        const postData = {
+            ...post,
+            picture: post.picture || defaultImage,
+        };
+
+        try {
+            const response = await API.createPost(postData);
+            if (response.isSuccess) {
+                navigate('/');
+            } else {
+                alert("Failed to create post. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error creating post:", error);
+            alert("Something went wrong while creating the post.");
+        }
     };
 
-    try {
-        const response = await API.createPost(postData);
-        if (response.isSuccess) {
-            navigate('/');
-        } else {
-            alert("Failed to create post. Please try again.");
-        }
-    } catch (error) {
-        console.error("Error creating post:", error);
-        alert("Something went wrong while creating the post.");
-    }
-};
-
-    // const savePost = async () => {
-    // // 🧩 Check if image is still uploading
-    // if (!post.picture) {
-    //     alert("Image is still uploading. Please wait...");
-    //     return;
-    // }
-
-    // try {
-    //     const response = await API.createPost(post);
-    //     if (response.isSuccess) {
-    //         navigate('/');
-    //     } else {
-    //         alert("Failed to create post. Please try again.");
-    //     }
-    // } catch (error) {
-    //     console.error("Error creating post:", error);
-    //     alert("Something went wrong while creating the post.");
-    // }
-    // };
-
-    // const savePost = async () => {
-    //     let response = await API.createPost(post);
-    //     if (response.isSuccess) {
-    //         navigate('/');
-    //     }
-    // }
-    
     return(
         <Container>
             <Image src={url} alt="banner" />

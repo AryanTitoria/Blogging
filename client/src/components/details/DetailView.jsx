@@ -3,14 +3,17 @@ import { useEffect, useState, useContext } from 'react';
 import { Box, Typography, styled } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 
 import { API } from '../../service/api';
 import { DataContext } from '../../context/DataProvider';
 
-const Container = styled(Box)`
-    margin: 50px 100px
-`;
+const Container = styled(Box)(({ theme }) =>({
+    margin: '50px 100px',
+    [theme.breakpoints.down('md')]: {
+        margin: 0
+    }
+}));
 
 const Image = styled('img')({
     width: '100%',
@@ -70,27 +73,14 @@ const Description = styled(Typography)`
     word-break: break-word;
 `;
 
-
-// const EditIcon = styled(Edit)`
-//     margin: 50px;
-//     padding: 5px;
-//     border: 1px solid #878787;
-//     border-radius: 10px;
-// `;
-
-// const DeleteIcon = styled(Delete)`
-//     margin: 50px;
-//     padding: 5px;
-//     border: 1px solid #878787;
-//     border-radius: 10px;
-// `;
-
 const DetailView = () => {
 
     const [post, setPost] = useState({});
 
     const { id } = useParams();
     const { account } = useContext(DataContext);
+
+    const navigate = useNavigate();
 
     const url = post.picture ? post.picture : 'https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wJTIwc2V0dXB8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80';
 
@@ -104,6 +94,13 @@ const DetailView = () => {
         fetchData();
     }, [])
 
+    const deleteBlog = async() => {
+        let response = await API.deletePost(post._id);
+        if (response.isSuccess) {
+            navigate('/');
+        }
+    }
+
 
     return (
         <Container>
@@ -113,8 +110,8 @@ const DetailView = () => {
                 {
                     account.username === post.username &&
                     <>
-                        <Edit color="primary"/>
-                        <Delete color="error"/>
+                        <Link to={`/update/${post._id}`}><EditIcon color="primary"/></Link>
+                        <DeleteIcon onClick={() => deleteBlog()} color="error"/>
                     </>
                 }
             </IconContainer>

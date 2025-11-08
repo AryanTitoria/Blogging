@@ -1,8 +1,8 @@
 import { Box, styled, Typography, Link } from '@mui/material';
-import { GitHub, Instagram, Email } from '@mui/icons-material';
+import { GitHub, Instagram, Email, LinkedIn } from '@mui/icons-material';
 
 const Banner = styled(Box)`
-    background-image: url(https://www.wallpapertip.com/wmimgs/23-236943_us-wallpaper-for-website.jpg);
+    background-image: url(https://raw.githubusercontent.com/aryantitoria12/images/main/banner.png);
     width: 100%;
     height: 50vh;
     background-position: left 0px bottom 0px;
@@ -26,26 +26,28 @@ const About = () => {
         <Box>
             <Banner/>
             <Wrapper>
-                <Typography variant="h3">Code for Interview</Typography>
-                <Text variant="h5">I'm a Software Engineer based in India. 
-                    I've built websites, desktop applications and corporate software.<br />
-                    If you are interested, you can view some of my favorite projects here
+                <Typography variant="h3">Building Ideas Together</Typography>
+                <Text variant="h5">
+                    We are a group of three friends — Aryan Titoria, Vertika Sati, and Shalini Mehra — passionate Engineering students from India.<br />
+                    We love to learn, build, and create exciting projects together.<br />
+                    Check out some of our favorite work here
                     <Box component="span" style={{ marginLeft: 5 }}>
-                        <Link href="https://github.com/kunaltyagi9" color="inherit" target="_blank"><GitHub /></Link>
+                        <Link href="https://github.com/AryanTitoria" color="inherit" target="_blank"><GitHub /></Link>
                     </Box>
                 </Text>
                 <Text variant="h5">
-                    Need something built or simply want to have chat? Reach out to me on
+                    Want to collaborate or just say hi? connect to us on LinkedIn
                     <Box component="span" style={{ marginLeft: 5 }}>
-                        <Link href="https://www.instagram.com/codeforinterview/" color="inherit" target="_blank">
-                            <Instagram />
+                        <Link href="https://www.linkedin.com/in/aryan-titoria/" color="inherit" target="_blank">
+                            <LinkedIn />
                         </Link>
-                    </Box>  
-                        or send me an Email 
-                        <Link href="mailto:codeforinterview@gmail.com?Subject=This is a subject" target="_blank" color="inherit">
-                            <Email />
+                    </Box>  <br></br>
+                        Follow me on Instagram at  <strong>@aryan_titoria12</strong>
+                        <Link href="https://www.instagram.com/aryan_titoria12/" color="inherit" target="_blank">
+                            <Instagram />
                         </Link>.
                 </Text>
+
             </Wrapper>
         </Box>
     )

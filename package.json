@@ -1,0 +1,10 @@
+{
+  "name": "blogging-root",
+  "private": true,
+  "engines": {
+    "node": "18.x"
+  },
+  "scripts": {
+    "start": "cd server && npm install && npm start"
+  }
+}

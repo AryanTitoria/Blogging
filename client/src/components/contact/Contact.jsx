@@ -2,12 +2,14 @@ import { Box, styled, Typography, Link } from '@mui/material';
 import { GitHub, Instagram, LinkedIn, Email } from '@mui/icons-material';
 
 const Banner = styled(Box)`
-    background-image: url(http://mrtaba.ir/image/bg2.jpg);
-    width: 100%;
-    height: 50vh;
-    background-position: left 0px top -100px;
-    background-size: cover;
+  background-image: url('https://images.unsplash.com/photo-1596524430615-b46475ddff6e?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.1.0');
+  width: 100%;
+  height: 50vh;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
+
 
 const Wrapper = styled(Box)`
     padding: 20px;

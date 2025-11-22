@@ -26,16 +26,16 @@ const Image = styled('img')({
 
 const Text = styled(Typography)`
     color: #878787;
-    font-size: 12px;
+    font-size: 16px;
 `;
 
 const Heading = styled(Typography)`
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
 `;
 
 const Details = styled(Typography)`
-    font-size: 14px;
+    font-size: 16px;
     word-break: break-word;
 `;
 

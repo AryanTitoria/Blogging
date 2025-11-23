@@ -23,7 +23,8 @@ const CORS_OPTIONS = {
 };
 
 app.use(cors(CORS_OPTIONS));
-app.options('*', cors(CORS_OPTIONS));  // <<< THIS IS REQUIRED
+app.options(/.*/, cors(CORS_OPTIONS));
+// app.options('*', cors(CORS_OPTIONS));  // <<< THIS IS REQUIRED
 
 app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));

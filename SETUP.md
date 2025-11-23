@@ -14,14 +14,23 @@ Setup 2. Backend Setup (/server)
 
 
 Create a .env file inside the server folder and add:
->>  >PORT=8000
-    >DB_USERNAME=<your_mongodb_username>
-    >DB_PASSWORD=<your_mongodb_password>
-    >MONGODB_URL=<your_full_mongodb_connection_string>
-    >ACCESS_SECRET_KEY=<your_jwt_access_secret>
-    >REFRESH_SECRET_KEY=<your_jwt_refresh_secret>
-    >CLIENT_URL=http://localhost:3000
-    >BASE_URL=http://localhost:8000        <<
+>>
+    PORT=8000
+
+    DB_USERNAME=<your_mongodb_username>
+    
+    DB_PASSWORD=<your_mongodb_password>
+    
+    MONGODB_URL=<your_full_mongodb_connection_string>
+    
+    ACCESS_SECRET_KEY=<your_jwt_access_secret>
+    
+    REFRESH_SECRET_KEY=<your_jwt_refresh_secret>
+    
+    CLIENT_URL=http://localhost:3000
+    
+    BASE_URL=http://localhost:8000        
+<<
 
 Start the backend:
     run in backend terminal(inside server):- ```npm start```

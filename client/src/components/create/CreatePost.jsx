@@ -64,7 +64,7 @@ const CreatePost = () => {
 
     const url = post.picture ? post.picture : 'https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wJTIwc2V0dXB8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'
 
-    useEffect(() => {
+useEffect(() => {
   const uploadImage = async () => {
     if (file) {
       const data = new FormData();
@@ -72,19 +72,44 @@ const CreatePost = () => {
 
       try {
         const response = await API.uploadFile(data);
-        console.log("Upload response:", response.data);
+        console.log("Upload response:", response);
 
-        // ✅ Fixed logic
-        const imageUrl = response.data?.imageUrl || response.data;
+        // response may return:
+        // 1) { imageUrl: 'https://.../file/...'}  OR
+        // 2) { filename: '1762...png' } OR
+        // 3) a plain string like '1762...png'
+        const respData = response?.data ?? response;
+
+        // If server already sends full URL:
+        if (respData?.imageUrl && respData.imageUrl.startsWith('http')) {
+          setPost(prev => ({ ...prev, picture: respData.imageUrl }));
+          console.log("✅ Image URL set to (from imageUrl):", respData.imageUrl);
+          return;
+        }
+
+        // If server sent a filename or relative path, construct full URL using frontend API_URL
+        // API_URL is exported from client/src/api.js
+        // e.g. API_URL === "https://blogging-production.up.railway.app"
+        let imageUrl = null;
+
+        if (respData?.filename) {
+          imageUrl = `${API_URL}/file/${respData.filename}`;
+        } else if (typeof respData === 'string') {
+          // maybe the API returned plain filename or path
+          const s = respData.trim();
+          // if it already looks like /file/... or file/..., use that
+          if (s.startsWith('/file') || s.startsWith('file')) {
+            imageUrl = `${API_URL}${s.startsWith('/') ? s : `/${s}`}`;
+          } else {
+            imageUrl = `${API_URL}/file/${s}`;
+          }
+        }
 
         if (imageUrl) {
-          setPost(prev => ({
-            ...prev,
-            picture: imageUrl
-          }));
-          console.log("✅ Image URL set to:", imageUrl);
+          setPost(prev => ({ ...prev, picture: imageUrl }));
+          console.log("✅ Image URL set to (constructed):", imageUrl);
         } else {
-          console.error("❌ No imageUrl found in response:", response.data);
+          console.error("❌ No usable image info in upload response:", respData);
         }
 
       } catch (error) {
@@ -95,6 +120,38 @@ const CreatePost = () => {
 
   uploadImage();
 }, [file]);
+
+    //     useEffect(() => {
+//   const uploadImage = async () => {
+//     if (file) {
+//       const data = new FormData();
+//       data.append("file", file);
+
+//       try {
+//         const response = await API.uploadFile(data);
+//         console.log("Upload response:", response.data);
+
+//         // ✅ Fixed logic
+//         const imageUrl = response.data?.imageUrl || response.data;
+
+//         if (imageUrl) {
+//           setPost(prev => ({
+//             ...prev,
+//             picture: imageUrl
+//           }));
+//           console.log("✅ Image URL set to:", imageUrl);
+//         } else {
+//           console.error("❌ No imageUrl found in response:", response.data);
+//         }
+
+//       } catch (error) {
+//         console.error("Image upload failed:", error);
+//       }
+//     }
+//   };
+
+//   uploadImage();
+// }, [file]);
 
 useEffect(() => {
  

@@ -4,6 +4,8 @@ import { API_NOTIFICATIONS_MESSAGES, SERVICE_URLS } from '../constants/config';
 import { getAccessToken, getType } from '../utils/common-utils';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+console.log("BUILT API_URL =", API_URL);
+
 
 const axiosInstance = axios.create({
     baseURL: API_URL,

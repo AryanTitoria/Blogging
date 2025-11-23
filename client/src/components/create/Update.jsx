@@ -124,32 +124,7 @@ const Update = () => {
             navigate(`/details/${id}`);
         }
     }
-    // const savePost = async () => {
     
-    // const defaultImage = 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=752&q=80';
-
-    //     if (file && !post.picture) {
-    //         alert("Please wait, image is still uploading...");
-    //         return;
-    //     }
-
-    //     const postData = {
-    //         ...post,
-    //         picture: post.picture || defaultImage,
-    //     };
-
-    //     try {
-    //         const response = await API.createPost(postData);
-    //         if (response.isSuccess) {
-    //             navigate('/');
-    //         } else {
-    //             alert("Failed to create post. Please try again.");
-    //         }
-    //     } catch (error) {
-    //         console.error("Error creating post:", error);
-    //         alert("Something went wrong while creating the post.");
-    //     }
-    // };
 
     return(
         <Container>

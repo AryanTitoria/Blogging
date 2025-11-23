@@ -12,37 +12,47 @@ dotenv.config();
 
 const app = express();
 
-// Allow CORS only from the client URL (set CLIENT_URL in Railway/Vercel later)
+// CORS FIX
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000';
-app.use(cors({
+
+const CORS_OPTIONS = {
   origin: CLIENT_URL,
-  credentials: true
-}));
+  credentials: true,
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(CORS_OPTIONS));
+app.options('*', cors(CORS_OPTIONS));  // <<< THIS IS REQUIRED
 
 app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Routes
 app.use('/', Router);
 app.use('/file', imageRoute);
 
-// Use PORT from environment (Railway provides this). Fallback to 8000 for local dev.
+// PORT
 const PORT = process.env.PORT || 8000;
 
-// Connect to DB first, then start server
+// DB
 const USERNAME = process.env.DB_USERNAME;
 const PASSWORD = process.env.DB_PASSWORD;
-const MONGODB_URL = process.env.MONGODB_URL; // optional full connection string
+const MONGODB_URL = process.env.MONGODB_URL;
 
-// Prefer full MONGODB_URL if provided by env; otherwise use connection(USERNAME, PASSWORD)
 const startServer = async () => {
   try {
     if (MONGODB_URL) {
-      // If your connection() supports a full URI, modify connection to accept it.
       await connection(MONGODB_URL);
     } else {
       await connection(USERNAME, PASSWORD);
     }
 
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+      console.log("CLIENT_URL:", CLIENT_URL);
+    });
+
   } catch (err) {
     console.error('Failed to start server:', err);
     process.exit(1);
@@ -50,6 +60,7 @@ const startServer = async () => {
 };
 
 startServer();
+
 
 // import express from 'express';
 // import dotenv from 'dotenv';

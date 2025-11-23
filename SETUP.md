@@ -7,7 +7,10 @@ cd MyBlog
 Setup 2. Backend Setup (/server)
     Navigate to the backend folder: 
     run in your terminal- ```cd server```
-    Install dependencies:- ```npm install```
+    only First time: 
+        Install dependencies:- ```npm install```
+        ```npm install express mongoose dotenv cors multer gridfs-stream jsonwebtoken bcrypt body-parser```
+
 
 
 Create a .env file inside the server folder and add:
@@ -31,10 +34,14 @@ step 3. Frontend Setup (/client)
 Navigate to the frontend folder:
     run in terminal:- ```cd client```
 
-Install dependencies:
-    run in terminal inside client:- ```npm install```
+only first time: 
+    Install dependencies:
+        run in terminal inside client:- ```npm install```
+        ```npm install @mui/material @emotion/react @emotion/styled axios react-router-dom```
 
 Start the frontend:
     run in terminal inside client:- ```npm start```
 
 Your frontend will run at: http://localhost:3000
+
+

@@ -1,6 +1,6 @@
 import { Box, Typography, styled } from '@mui/material';
-import API_URL from '../../api'; // adjust import path if needed
-import defaultImg from '../../../assets/default-image.png'; // optional local default
+import API_URL from '../../api'; // adjust path based on your project
+import defaultImg from '../../../assets/default-image.png'; // or use any default image you want
 
 import { addElipsis } from '../../../utils/common-utils';
 
@@ -40,41 +40,38 @@ const Details = styled(Typography)`
     word-break: break-word;
 `;
 
-/**
- * Resolve the image source for a post:
- * - If post.picture starts with http(s) -> return as-is
- * - If it starts with /file or is a filename -> prefix with API_URL
- * - If it contains localhost -> replace with API_URL
- * - Otherwise fallback to default image
- */
-const resolveImageSrc = (picture) => {
-  if (!picture) return defaultImg; // local default or a remote default
+const fixImageURL = (url) => {
+    if (!url) return defaultImg;
 
-  const trimmed = picture.trim();
+    // Case 1: already a full https URL → return as-is
+    if (url.startsWith("https://") || url.startsWith("http://")) {
+        // if it's localhost, rewrite it:
+        if (url.includes("localhost")) {
+            return url.replace("http://localhost:8000", API_URL);
+        }
+        return url;
+    }
 
-  // already absolute url
-  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    // Case 2: relative URL like /file/xxx
+    if (url.startsWith("/file")) {
+        return `${API_URL}${url}`;
+    }
 
-  // starts with /file or relative path -> prefix with API_URL
-  if (trimmed.startsWith('/file') || trimmed.startsWith('file/')) {
-    return `${API_URL}${trimmed}`;
-  }
-
-  // if saved with localhost base, replace it
-  if (trimmed.includes('localhost:')) {
-    return trimmed.replace(/https?:\/\/localhost:\d+/i, API_URL);
-  }
-
-  // fallback: prefix just in case it's a filename or relative path
-  return `${API_URL}/${trimmed}`.replace(/([^:]\/)\/+/g, '$1'); // removes duplicate slashes
+    // Fallback
+    return defaultImg;
 };
 
 const Post = ({ post }) => {
-    const imgSrc = resolveImageSrc(post?.picture);
+
+    const imageSrc = fixImageURL(post.picture);
 
     return (
         <Container>
-            <Image src={imgSrc} alt="blog" onError={(e) => { e.target.onerror = null; e.target.src = defaultImg; }} />
+            <Image 
+                src={imageSrc} 
+                alt="blog"
+                onError={(e) => { e.target.onerror = null; e.target.src = defaultImg; }} 
+            />
             <Text>{post.categories}</Text>
             <Heading>{addElipsis(post.title, 20)}</Heading>
             <Text>By {post.username}</Text>
@@ -84,6 +81,7 @@ const Post = ({ post }) => {
 };
 
 export default Post;
+
 
 // import { Box, Typography, styled } from '@mui/material';
 
